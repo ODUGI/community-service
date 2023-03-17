@@ -1,6 +1,8 @@
 package com.example.communityservice.controller;
 
 import com.example.communityservice.domain.SuccessMessages;
+import com.example.communityservice.dto.CategoryRequestDto;
+import com.example.communityservice.dto.ChannelRequestDto;
 import com.example.communityservice.dto.CommunityRequestDto;
 import com.example.communityservice.response.CommonResponse;
 import com.example.communityservice.service.CommunityService;
@@ -32,6 +34,16 @@ public class CommunityController {
         Long userId = Long.parseLong(request.getHeader("id"));
 
         return responseService.getSuccessResponse(COMMUNITY_CREATE_SUCCESS, communityService.createCommunity(userId, file, communityName));
+    }
+
+    @PostMapping("/createcategory")
+    public CommonResponse<Object> createCategory(@RequestBody CategoryRequestDto categoryRequestDto) {
+        return responseService.getSuccessResponse(CATEGORY_CREATE_SUCCESS, communityService.createCategory(categoryRequestDto));
+    }
+
+    @PostMapping("/createchannel")
+    public CommonResponse<Object> createChannel(@RequestBody ChannelRequestDto channelRequestDto) {
+        return responseService.getSuccessResponse(CHANNEL_CREATE_SUCCESS, communityService.createChannel(channelRequestDto));
     }
 
 

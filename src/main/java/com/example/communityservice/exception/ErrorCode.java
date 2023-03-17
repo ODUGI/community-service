@@ -18,6 +18,7 @@ public enum ErrorCode {
 
     NO_COMMUNITY_ERROR(HttpStatus.BAD_REQUEST, "COMMUNITY001", "커뮤니티 정보가 존재하지 않습니다."),
     NO_CATEGORY_ERROR(HttpStatus.BAD_REQUEST, "COMMUNITY002", "카테고리 정보가 존재하지 않습니다."),
+    NO_AUTHORITY_ERROR(HttpStatus.BAD_REQUEST, "COMMUNITY003", "권한이 없는 유저 입니다."),
 
     // Member Part
     PW_MATCH_ERROR(HttpStatus.BAD_REQUEST, "MEMBER001", "비밀번호가 일치하지 않습니다."),

@@ -51,11 +51,13 @@ public class CommunityService {
         // 기본 카테고리 생성
         CategoryRequestDto chatCategoryDto = CategoryRequestDto.builder()
                 .communityId(newCommunity.getId())
+                .role(ADMIN)
                 .name("채팅 채널")
                 .build();
 
         CategoryRequestDto voiceCategoryDto = CategoryRequestDto.builder()
                 .communityId(newCommunity.getId())
+                .role(ADMIN)
                 .name("음성 채널")
                 .build();
 
@@ -68,12 +70,14 @@ public class CommunityService {
         ChannelRequestDto chatChannelDto = ChannelRequestDto.builder()
                 .categoryId(chatCategoryId)
                 .name("일반")
+                .role(ADMIN)
                 .type(CHAT)
                 .build();
 
         ChannelRequestDto voiceChannelDto = ChannelRequestDto.builder()
                 .categoryId(voiceCategoryId)
                 .name("일반")
+                .role(ADMIN)
                 .type(VOICE)
                 .build();
 
@@ -105,7 +109,17 @@ public class CommunityService {
         return newCommunityMember.getId();
     }
 
+    public void validateRole(CommunityRole role){
+        if(role != ADMIN){
+            throw new ApiException(NO_AUTHORITY_ERROR);
+        }
+    }
+
     public Long createCategory(CategoryRequestDto categoryRequestDto) {
+
+        // 권한 검사
+        validateRole(categoryRequestDto.getRole());
+
         Community community = communityRepository.findById(categoryRequestDto.getCommunityId())
                 .orElseThrow(() -> new ApiException(NO_COMMUNITY_ERROR));
 
@@ -120,6 +134,9 @@ public class CommunityService {
     }
 
     public Long createChannel(ChannelRequestDto channelRequestDto) {
+
+        validateRole(channelRequestDto.getRole());
+
         Category category = categoryRepository.findById(channelRequestDto.getCategoryId())
                 .orElseThrow(() -> new ApiException(NO_CATEGORY_ERROR));
 
