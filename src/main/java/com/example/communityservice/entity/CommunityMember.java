@@ -1,8 +1,13 @@
 package com.example.communityservice.entity;
 
-import lombok.*;
+import com.example.communityservice.domain.CommunityRole;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.time.LocalDateTime;
 
 @Getter
@@ -10,18 +15,33 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Category {
+public class CommunityMember {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
+    @Column(name = "communitymember_id")
     private Long id;
-
-    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "community_id")
     private Community community;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @Column(columnDefinition = "TINYINT", length = 1)
+    private CommunityRole role;
+
+    @Email
+    private String email;
+
+    private String profileImage;
+
+    private String introduction;
+
+    @Column(length = 30)
+    private String name;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

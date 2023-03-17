@@ -28,9 +28,10 @@ public class CommunityController {
 
     @PostMapping("/createcommunity")
     public CommonResponse<Object> createCommunity(HttpServletRequest request, @RequestPart MultipartFile file,
-                                                  @RequestBody CommunityRequestDto communityRequestDto){
+                                                  @RequestParam String communityName){
         Long userId = Long.parseLong(request.getHeader("id"));
-        return responseService.getSuccessResponse(COMMUNITY_CREATE_SUCCESS, communityService.createCommunity(userId, file, communityRequestDto));
+
+        return responseService.getSuccessResponse(COMMUNITY_CREATE_SUCCESS, communityService.createCommunity(userId, file, communityName));
     }
 
 

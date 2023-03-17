@@ -1,10 +1,19 @@
 package com.example.communityservice.entity;
 
-import org.springframework.data.annotation.Id;
+import com.example.communityservice.domain.ChannelType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
 public class Channel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,6 +21,15 @@ public class Channel {
     private Long id;
 
     private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    // 음성 or 채팅
+    @Column(columnDefinition = "TINYINT", length = 1)
+    private ChannelType type;
+
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

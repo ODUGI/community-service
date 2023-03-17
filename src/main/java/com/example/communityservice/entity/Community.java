@@ -1,10 +1,18 @@
 package com.example.communityservice.entity;
 
-import org.springframework.data.annotation.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
 public class Community {
 
     @Id

@@ -16,14 +16,8 @@ public enum ErrorCode {
     NO_MEMBER_ERROR(HttpStatus.BAD_REQUEST, "AUTH005", "유저 정보가 없습니다."),
 
 
-    NO_TOKEN_HEADER(HttpStatus.BAD_REQUEST, "AUTH010", "토큰이 존재하지 않습니다."),
-    JWT_INVALID(HttpStatus.BAD_REQUEST, "AUTH011", "잘못된 JWT 서명입니다."),
-    JWT_EXPIRED(HttpStatus.BAD_REQUEST, "AUTH012", "만료된 JWT 토큰입니다."),
-    JWT_NOT_SUPPORT(HttpStatus.BAD_REQUEST, "AUTH013", "지원되지 않는 JWT 토큰입니다."),
-    JWT_ERROR(HttpStatus.BAD_REQUEST, "AUTH014", "JWT 토큰이 잘못되었습니다."),
-    NO_AUTHORIZE(HttpStatus.BAD_REQUEST, "AUTH015", "권한 정보가 없는 토큰입니다."),
-    NO_RT_IN_DB(HttpStatus.BAD_REQUEST, "AUTH016", "해당 리프레쉬 토큰이 DB에 존재하지 않습니다."),
-
+    NO_COMMUNITY_ERROR(HttpStatus.BAD_REQUEST, "COMMUNITY001", "커뮤니티 정보가 존재하지 않습니다."),
+    NO_CATEGORY_ERROR(HttpStatus.BAD_REQUEST, "COMMUNITY002", "카테고리 정보가 존재하지 않습니다."),
 
     // Member Part
     PW_MATCH_ERROR(HttpStatus.BAD_REQUEST, "MEMBER001", "비밀번호가 일치하지 않습니다."),

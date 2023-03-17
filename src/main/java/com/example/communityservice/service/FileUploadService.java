@@ -35,7 +35,7 @@ public class FileUploadService {
     private final AmazonS3 amazonS3;
 
     public String uploadFile(MultipartFile file){
-        log.info("커뮤니티 사진 업로드 요청 [IN] : {}");
+        log.info("커뮤니티 사진 업로드 요청 [IN]");
         String fileName = "communityProfile/";
         fileName += createFileName(file.getOriginalFilename());
         ObjectMetadata objectMetadata = new ObjectMetadata();
