@@ -1,15 +1,20 @@
 package com.example.communityservice.service;
 
 import com.example.communityservice.domain.CommunityRole;
-import com.example.communityservice.dto.CategoryRequestDto;
-import com.example.communityservice.dto.ChannelRequestDto;
-import com.example.communityservice.dto.CommunityRequestDto;
+import com.example.communityservice.dto.request.CategoryRequestDto;
+import com.example.communityservice.dto.request.ChannelRequestDto;
+import com.example.communityservice.dto.request.CommunityRequestDto;
+import com.example.communityservice.dto.response.CommunityResponseDto;
 import com.example.communityservice.entity.*;
 import com.example.communityservice.exception.ApiException;
 import com.example.communityservice.repository.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.communityservice.domain.CommunityRole.*;
 import static com.example.communityservice.exception.ErrorCode.*;
@@ -18,6 +23,7 @@ import static com.example.communityservice.domain.ChannelType.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CommunityService {
 
     private final FileUploadService fileUploadService;
@@ -149,5 +155,19 @@ public class CommunityService {
         Channel newChannel = channelRepository.save(channel);
 
         return newChannel.getId();
+    }
+
+    public List<CommunityResponseDto> showCommunity(Long userId) {
+
+        List<CommunityMember> members = communityMemberRepository.findByMember_Id(userId);
+
+        List<CommunityResponseDto> communityResponseDtos = new ArrayList<>();
+
+        for (CommunityMember member : members) {
+            Community community = member.getCommunity();
+            communityResponseDtos.add(community.toCommunityResponseDto());
+        }
+
+        return communityResponseDtos;
     }
 }

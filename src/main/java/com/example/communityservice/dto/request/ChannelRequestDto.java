@@ -1,5 +1,6 @@
-package com.example.communityservice.dto;
+package com.example.communityservice.dto.request;
 
+import com.example.communityservice.domain.ChannelType;
 import com.example.communityservice.domain.CommunityRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,8 +11,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryRequestDto {
+public class ChannelRequestDto {
+
     private String name;
-    private Long communityId;
+    private Long categoryId;
+    private ChannelType type;
     private CommunityRole role;
+
 }

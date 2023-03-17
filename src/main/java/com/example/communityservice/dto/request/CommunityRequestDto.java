@@ -1,4 +1,4 @@
-package com.example.communityservice.dto;
+package com.example.communityservice.dto.request;
 
 import com.example.communityservice.entity.Community;
 import lombok.AllArgsConstructor;
