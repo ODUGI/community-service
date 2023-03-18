@@ -55,6 +55,7 @@ public class Channel {
 
     public ChannelResponseDto toChannelResponseDto(){
         return ChannelResponseDto.builder()
+                .id(this.id)
                 .categoryId(this.category.getId())
                 .type(this.type)
                 .name(this.name)

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChannelResponseDto {
+    private Long id;
     private Long categoryId;
     private ChannelType type;
     private String name;
