@@ -1,6 +1,7 @@
 package com.example.communityservice.entity;
 
 import com.example.communityservice.domain.CommunityRole;
+import com.example.communityservice.dto.response.CommunityMemberResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -57,5 +58,17 @@ public class CommunityMember {
     @PreUpdate
     public void updatedAt(){
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public CommunityMemberResponseDto toCommunityMemberResponseDto(){
+        return CommunityMemberResponseDto.builder()
+                .name(this.getName())
+                .email(this.getEmail())
+                .role(this.getRole())
+                .introduction(this.getIntroduction())
+                .profileImage(this.getProfileImage())
+                .joinedAt(this.getCreatedAt())
+                .createdAt(this.getMember().getCreatedAt())
+                .build();
     }
 }

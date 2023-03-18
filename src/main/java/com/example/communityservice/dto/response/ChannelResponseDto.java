@@ -1,22 +1,18 @@
-package com.example.communityservice.dto.request;
+package com.example.communityservice.dto.response;
 
 import com.example.communityservice.domain.ChannelType;
-import com.example.communityservice.domain.CommunityRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @Builder
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
-public class ChannelRequestDto {
-
-    private String name;
+@NoArgsConstructor
+public class ChannelResponseDto {
     private Long categoryId;
-    private Long communityId;
     private ChannelType type;
-    private CommunityRole role;
+    private String name;
 
 }

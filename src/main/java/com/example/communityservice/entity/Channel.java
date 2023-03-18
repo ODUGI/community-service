@@ -1,6 +1,7 @@
 package com.example.communityservice.entity;
 
 import com.example.communityservice.domain.ChannelType;
+import com.example.communityservice.dto.response.ChannelResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,6 +27,10 @@ public class Channel {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "community_id")
+    private Community community;
+
     // 음성 or 채팅
     @Column(columnDefinition = "TINYINT", length = 1)
     private ChannelType type;
@@ -47,4 +52,12 @@ public class Channel {
         this.updatedAt = LocalDateTime.now();
     }
 
+
+    public ChannelResponseDto toChannelResponseDto(){
+        return ChannelResponseDto.builder()
+                .categoryId(this.category.getId())
+                .type(this.type)
+                .name(this.name)
+                .build();
+    }
 }

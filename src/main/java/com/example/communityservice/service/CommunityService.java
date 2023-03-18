@@ -4,6 +4,9 @@ import com.example.communityservice.domain.CommunityRole;
 import com.example.communityservice.dto.request.CategoryRequestDto;
 import com.example.communityservice.dto.request.ChannelRequestDto;
 import com.example.communityservice.dto.request.CommunityRequestDto;
+import com.example.communityservice.dto.response.CategoryResponseDto;
+import com.example.communityservice.dto.response.ChannelResponseDto;
+import com.example.communityservice.dto.response.CommunityMemberResponseDto;
 import com.example.communityservice.dto.response.CommunityResponseDto;
 import com.example.communityservice.entity.*;
 import com.example.communityservice.exception.ApiException;
@@ -15,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.example.communityservice.domain.CommunityRole.*;
 import static com.example.communityservice.exception.ErrorCode.*;
@@ -76,6 +80,7 @@ public class CommunityService {
         ChannelRequestDto chatChannelDto = ChannelRequestDto.builder()
                 .categoryId(chatCategoryId)
                 .name("일반")
+                .communityId(newCommunity.getId())
                 .role(ADMIN)
                 .type(CHAT)
                 .build();
@@ -83,6 +88,7 @@ public class CommunityService {
         ChannelRequestDto voiceChannelDto = ChannelRequestDto.builder()
                 .categoryId(voiceCategoryId)
                 .name("일반")
+                .communityId(newCommunity.getId())
                 .role(ADMIN)
                 .type(VOICE)
                 .build();
@@ -146,10 +152,14 @@ public class CommunityService {
         Category category = categoryRepository.findById(channelRequestDto.getCategoryId())
                 .orElseThrow(() -> new ApiException(NO_CATEGORY_ERROR));
 
+        Community community = communityRepository.findById(channelRequestDto.getCommunityId())
+                .orElseThrow(() -> new ApiException(NO_COMMUNITY_ERROR));
+
         Channel channel = Channel.builder()
                 .category(category)
                 .type(channelRequestDto.getType())
                 .name(channelRequestDto.getName())
+                .community(community)
                 .build();
 
         Channel newChannel = channelRepository.save(channel);
@@ -169,5 +179,44 @@ public class CommunityService {
         }
 
         return communityResponseDtos;
+    }
+
+    public CommunityMemberResponseDto getCommunityPersonalProfile(Long userId, Long communityId) {
+        CommunityMember communityMember = communityMemberRepository.findByCommunity_IdAndMember_Id(communityId, userId)
+                .orElseThrow(() -> new ApiException(NO_COMMUNITY_MEMBER_ERROR));
+
+        return communityMember.toCommunityMemberResponseDto();
+    }
+
+    public List<CommunityMemberResponseDto> getCommunityMembers(Long communityId) {
+        List<CommunityMember> communityMembers = communityMemberRepository.findByCommunity_Id(communityId);
+        List<CommunityMemberResponseDto> communityMemberResponseDtoList = new ArrayList<>();
+
+        for (CommunityMember communityMember : communityMembers) {
+            communityMemberResponseDtoList.add(communityMember.toCommunityMemberResponseDto());
+        }
+
+        return communityMemberResponseDtoList;
+    }
+
+    public List<CategoryResponseDto> getCommunityCategory(Long communityId) {
+        List<Category> categorys = categoryRepository.findAllByCommunity_Id(communityId);
+        List<CategoryResponseDto> categoryResponseDtoList = new ArrayList<>();
+        for (Category category : categorys) {
+            categoryResponseDtoList.add(category.toCategoryResponseDto());
+        }
+
+        return categoryResponseDtoList;
+    }
+
+    public List<ChannelResponseDto> getCommunityChannel(Long communityId) {
+        List<Channel> channels = channelRepository.findAllByCommunity_Id(communityId);
+        List<ChannelResponseDto> channelResponseDtoList = new ArrayList<>();
+
+        for (Channel channel : channels) {
+            channelResponseDtoList.add(channel.toChannelResponseDto());
+        }
+
+        return channelResponseDtoList;
     }
 }

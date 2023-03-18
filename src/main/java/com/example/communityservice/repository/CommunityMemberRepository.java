@@ -10,4 +10,9 @@ import java.util.Optional;
 
 public interface CommunityMemberRepository extends JpaRepository<CommunityMember, Long> {
     List<CommunityMember> findByMember_Id(Long id);
+
+    Optional<CommunityMember> findByCommunity_IdAndMember_Id(Long communityId, Long userId);
+
+    List<CommunityMember> findByCommunity_Id(Long id);
+
 }

@@ -1,5 +1,6 @@
 package com.example.communityservice.entity;
 
+import com.example.communityservice.dto.response.CategoryResponseDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -37,5 +38,12 @@ public class Category {
     @PreUpdate
     public void updatedAt(){
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public CategoryResponseDto toCategoryResponseDto(){
+        return CategoryResponseDto.builder()
+                .id(this.id)
+                .name(this.name)
+                .build();
     }
 }
