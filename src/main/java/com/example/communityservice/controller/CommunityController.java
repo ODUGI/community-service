@@ -3,6 +3,7 @@ package com.example.communityservice.controller;
 import com.example.communityservice.domain.CommunityRole;
 import com.example.communityservice.dto.request.CategoryRequestDto;
 import com.example.communityservice.dto.request.ChannelRequestDto;
+import com.example.communityservice.dto.request.DeleteRequestDto;
 import com.example.communityservice.response.CommonResponse;
 import com.example.communityservice.service.CommunityService;
 import com.example.communityservice.service.ResponseService;
@@ -77,10 +78,30 @@ public class CommunityController {
 
     }
 
+    @DeleteMapping("/community")
+    public CommonResponse<Object> deleteCommunity(@RequestBody DeleteRequestDto deleteRequestDto) {
+        return responseService.getSuccessResponse(COMMUNITY_DELETE_SUCCESS, communityService.deleteCommunity(deleteRequestDto));
+
+    }
+
+    @DeleteMapping("/category")
+    public CommonResponse<Object> deleteCategory(@RequestBody DeleteRequestDto deleteRequestDto) {
+        return responseService.getSuccessResponse(CATEGORY_DELETE_SUCCESS, communityService.deleteCommunityCategory(deleteRequestDto));
+
+    }
+
+    @DeleteMapping("/channel")
+    public CommonResponse<Object> deleteChannel(@RequestBody DeleteRequestDto deleteRequestDto) {
+        return responseService.getSuccessResponse(CHANNEL_DELETE_SUCCESS, communityService.deleteCommunityChannel(deleteRequestDto));
+
+    }
+
     @PostMapping("/joincommunity")
     public CommonResponse<Object> joinCommunity(HttpServletRequest request, @RequestParam Long communityId){
         Long userId = Long.parseLong(request.getHeader("id"));
         return responseService.getSuccessResponse(COMMUNITY_JOIN_SUCCESS, communityService.addCommunityMember(userId, communityId, USER));
     }
+
+
 
 }

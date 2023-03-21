@@ -4,6 +4,7 @@ import com.example.communityservice.domain.CommunityRole;
 import com.example.communityservice.dto.request.CategoryRequestDto;
 import com.example.communityservice.dto.request.ChannelRequestDto;
 import com.example.communityservice.dto.request.CommunityRequestDto;
+import com.example.communityservice.dto.request.DeleteRequestDto;
 import com.example.communityservice.dto.response.CategoryResponseDto;
 import com.example.communityservice.dto.response.ChannelResponseDto;
 import com.example.communityservice.dto.response.CommunityMemberResponseDto;
@@ -14,6 +15,7 @@ import com.example.communityservice.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -219,4 +221,52 @@ public class CommunityService {
 
         return channelResponseDtoList;
     }
+
+
+    @Transactional
+    public String deleteCommunity(DeleteRequestDto deleteRequestDto){
+
+        Long communityId = deleteRequestDto.getCommunityId();
+        CommunityRole role = deleteRequestDto.getRole();
+
+        validateRole(role);
+
+        // 채널 삭제 -> 카테고리 삭제 -> 채널 멤버서 삭제 -> 커뮤니티 삭제
+        channelRepository.deleteByCommunity_Id(communityId);
+        categoryRepository.deleteByCommunity_Id(communityId);
+        communityMemberRepository.deleteByCommunity_Id(communityId);
+        communityRepository.deleteById(communityId);
+
+        return "OK";
+    }
+
+    @Transactional
+    public String deleteCommunityCategory(DeleteRequestDto deleteRequestDto){
+        Long categoryId = deleteRequestDto.getCategoryId();
+        CommunityRole role = deleteRequestDto.getRole();
+        validateRole(role);
+
+        // 채널의 카테고리 부분 비움 -> 카테고리 삭제
+
+        List<Channel> channels = channelRepository.findAllByCategory_Id(categoryId);
+        for (Channel channel : channels) {
+            channel.setCategoryEmpty();
+        }
+
+        categoryRepository.deleteById(categoryId);
+
+        return "OK";
+    }
+
+    @Transactional
+    public String deleteCommunityChannel(DeleteRequestDto deleteRequestDto){
+        Long channelId = deleteRequestDto.getChannelId();
+        CommunityRole role = deleteRequestDto.getRole();
+        validateRole(role);
+
+        channelRepository.deleteById(channelId);
+        return "OK";
+    }
+
+
 }

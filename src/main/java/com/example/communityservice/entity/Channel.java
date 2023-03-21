@@ -6,8 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import reactor.util.annotation.Nullable;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter
@@ -24,6 +26,7 @@ public class Channel {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @Nullable
     @JoinColumn(name = "category_id")
     private Category category;
 
@@ -54,11 +57,25 @@ public class Channel {
 
 
     public ChannelResponseDto toChannelResponseDto(){
+
+        if(this.category == null ){
+            return ChannelResponseDto.builder()
+                    .id(this.id)
+                    .categoryId(null)
+                    .type(this.type)
+                    .name(this.name)
+                    .build();
+        }
+
         return ChannelResponseDto.builder()
                 .id(this.id)
                 .categoryId(this.category.getId())
                 .type(this.type)
                 .name(this.name)
                 .build();
+    }
+
+    public void setCategoryEmpty(){
+        this.category = null;
     }
 }

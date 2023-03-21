@@ -15,7 +15,10 @@ public enum SuccessMessages {
     COMMUNITY_MEMBERS_VIEW_SUCCESS("커뮤니티 멤버들 조회 완료"),
     COMMUNITY_CATEGORY_VIEW_SUCCESS("커뮤니티 카테고리 조회 완료"),
     COMMUNITY_CHANNEL_VIEW_SUCCESS("커뮤니티 채널 조회 완료"),
-    COMMUNITY_JOIN_SUCCESS("커뮤니티 가입 완료");
+    COMMUNITY_JOIN_SUCCESS("커뮤니티 가입 완료"),
+    COMMUNITY_DELETE_SUCCESS("커뮤니티 삭제 완료"),
+    CATEGORY_DELETE_SUCCESS("카테고리 삭제 완료"),
+    CHANNEL_DELETE_SUCCESS("채널 삭제 완료");
 
     private String message;
 }
