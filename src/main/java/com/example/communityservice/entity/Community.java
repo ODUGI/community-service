@@ -48,4 +48,8 @@ public class Community {
                 .profileImage(profileImage)
                 .build();
     }
+
+    public void modifyName(String name){
+        this.name = name;
+    }
 }

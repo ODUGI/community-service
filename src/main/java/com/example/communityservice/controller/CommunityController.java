@@ -3,6 +3,7 @@ package com.example.communityservice.controller;
 import com.example.communityservice.domain.CommunityRole;
 import com.example.communityservice.dto.request.CategoryRequestDto;
 import com.example.communityservice.dto.request.ChannelRequestDto;
+import com.example.communityservice.dto.request.CommunityModifyRequestDto;
 import com.example.communityservice.dto.request.DeleteRequestDto;
 import com.example.communityservice.response.CommonResponse;
 import com.example.communityservice.service.CommunityService;
@@ -93,6 +94,24 @@ public class CommunityController {
     @DeleteMapping("/channel")
     public CommonResponse<Object> deleteChannel(@RequestBody DeleteRequestDto deleteRequestDto) {
         return responseService.getSuccessResponse(CHANNEL_DELETE_SUCCESS, communityService.deleteCommunityChannel(deleteRequestDto));
+
+    }
+
+    @PatchMapping("/community")
+    public CommonResponse<Object> modifyCommunity(@RequestBody CommunityModifyRequestDto modifyRequestDto) {
+        return responseService.getSuccessResponse(COMMUNITY_MODIFY_SUCCESS,communityService.modifyCommunity(modifyRequestDto));
+
+    }
+
+
+    @PatchMapping("/category")
+    public CommonResponse<Object> modifyCategory(@RequestBody CommunityModifyRequestDto modifyRequestDto) {
+        return responseService.getSuccessResponse(CATEGORY_MODIFY_SUCCESS,communityService.modifyCommunityCategory(modifyRequestDto));
+
+    }
+    @PatchMapping("/channel")
+    public CommonResponse<Object> modifyChannel(@RequestBody CommunityModifyRequestDto modifyRequestDto) {
+        return responseService.getSuccessResponse(CHANNEL_MODIFY_SUCCESS,communityService.modifyCommunityChannel(modifyRequestDto));
 
     }
 

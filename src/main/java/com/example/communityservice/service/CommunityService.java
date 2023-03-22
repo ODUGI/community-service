@@ -1,10 +1,7 @@
 package com.example.communityservice.service;
 
 import com.example.communityservice.domain.CommunityRole;
-import com.example.communityservice.dto.request.CategoryRequestDto;
-import com.example.communityservice.dto.request.ChannelRequestDto;
-import com.example.communityservice.dto.request.CommunityRequestDto;
-import com.example.communityservice.dto.request.DeleteRequestDto;
+import com.example.communityservice.dto.request.*;
 import com.example.communityservice.dto.response.CategoryResponseDto;
 import com.example.communityservice.dto.response.ChannelResponseDto;
 import com.example.communityservice.dto.response.CommunityMemberResponseDto;
@@ -265,6 +262,41 @@ public class CommunityService {
         validateRole(role);
 
         channelRepository.deleteById(channelId);
+        return "OK";
+    }
+
+    @Transactional
+    public String modifyCommunity(CommunityModifyRequestDto modifyRequestDto) {
+        validateRole(modifyRequestDto.getRole());
+
+        Community community = communityRepository.findById(modifyRequestDto.getCommunityId())
+                .orElseThrow(() -> new ApiException(NO_COMMUNITY_ERROR));
+
+        community.modifyName(modifyRequestDto.getName());
+
+        return "OK";
+    }
+
+    @Transactional
+    public String modifyCommunityCategory(CommunityModifyRequestDto modifyRequestDto) {
+        validateRole(modifyRequestDto.getRole());
+
+        Category category = categoryRepository.findById(modifyRequestDto.getCategoryId())
+                .orElseThrow(() -> new ApiException(NO_CATEGORY_ERROR));
+        category.modifyName(modifyRequestDto.getName());
+
+        return "OK";
+    }
+
+    @Transactional
+    public String modifyCommunityChannel(CommunityModifyRequestDto modifyRequestDto) {
+        validateRole(modifyRequestDto.getRole());
+
+        Channel channel = channelRepository.findById(modifyRequestDto.getChannelId())
+                .orElseThrow(() -> new ApiException(NO_CHANNEL_ERROR));
+
+        channel.modifyName(modifyRequestDto.getName());
+
         return "OK";
     }
 

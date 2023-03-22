@@ -46,4 +46,8 @@ public class Category {
                 .name(this.name)
                 .build();
     }
+
+    public void modifyName(String name){
+        this.name = name;
+    }
 }

@@ -75,6 +75,10 @@ public class Channel {
                 .build();
     }
 
+    public void modifyName(String name){
+        this.name = name;
+    }
+
     public void setCategoryEmpty(){
         this.category = null;
     }
