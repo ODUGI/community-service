@@ -30,55 +30,55 @@ public class CommunityController {
         return "커뮤니티 서버 테스트 완료!";
     }
 
-    @PostMapping("/createcommunity")
+    // 생성
+    @PostMapping("/community")
     public CommonResponse<Object> createCommunity(HttpServletRequest request, @RequestPart MultipartFile file,
                                                   @RequestParam String communityName){
         Long userId = Long.parseLong(request.getHeader("id"));
         return responseService.getSuccessResponse(COMMUNITY_CREATE_SUCCESS, communityService.createCommunity(userId, file, communityName));
     }
 
-    @PostMapping("/createcategory")
+    @PostMapping("/category")
     public CommonResponse<Object> createCategory(@RequestBody CategoryRequestDto categoryRequestDto) {
         return responseService.getSuccessResponse(CATEGORY_CREATE_SUCCESS, communityService.createCategory(categoryRequestDto));
     }
 
-    @PostMapping("/createchannel")
+    @PostMapping("/channel")
     public CommonResponse<Object> createChannel(@RequestBody ChannelRequestDto channelRequestDto) {
         return responseService.getSuccessResponse(CHANNEL_CREATE_SUCCESS, communityService.createChannel(channelRequestDto));
     }
 
-    @GetMapping("/showcommunitys")
+    // 조회
+    @GetMapping("/communitys")
     public CommonResponse<Object> showCommunity(HttpServletRequest request){
         Long userId = Long.parseLong(request.getHeader("id"));
         return responseService.getSuccessResponse(COMMUNITY_VIEW_SUCCESS, communityService.showCommunity(userId));
     }
 
-    // 커뮤니티 프로필 조회 (userId, Community Id)
-    @GetMapping("/personal/{communityId}")
-    public CommonResponse<Object> getCommunityPersonalProfile(HttpServletRequest request, @PathVariable("communityId") Long communityId ){
-        Long userId = Long.parseLong(request.getHeader("id"));
-        return responseService.getSuccessResponse(COMMUNITY_PERSONAL_SUCCESS, communityService.getCommunityPersonalProfile(userId, communityId));
-    }
-
-    // 커뮤니티 멤버들 조회 (Community Id)
-    @GetMapping("/members/{communityId}")
-    public CommonResponse<Object> getCommunityMembers(@PathVariable("communityId") Long communityId){
-        return responseService.getSuccessResponse(COMMUNITY_MEMBERS_VIEW_SUCCESS, communityService.getCommunityMembers(communityId));
-    }
-
-    // 카테고리 조회 (커뮤니티 아이디)
     @GetMapping("/categorys/{communityId}")
     public CommonResponse<Object> getCommunityCategorys(@PathVariable("communityId") Long communityId){
         return responseService.getSuccessResponse(COMMUNITY_CATEGORY_VIEW_SUCCESS, communityService.getCommunityCategory(communityId));
     }
 
-    // 채널 조회 (커뮤니티 아이디)
     @GetMapping("/channels/{communityId}")
     public CommonResponse<Object> getCommunityChannels(@PathVariable("communityId") Long communityId){
         return responseService.getSuccessResponse(COMMUNITY_CHANNEL_VIEW_SUCCESS, communityService.getCommunityChannel(communityId));
 
     }
 
+    @GetMapping("/personal/{communityId}")
+    public CommonResponse<Object> getCommunityPersonalProfile(HttpServletRequest request, @PathVariable("communityId") Long communityId ){
+        Long userId = Long.parseLong(request.getHeader("id"));
+        return responseService.getSuccessResponse(COMMUNITY_PERSONAL_SUCCESS, communityService.getCommunityPersonalProfile(userId, communityId));
+    }
+
+    @GetMapping("/members/{communityId}")
+    public CommonResponse<Object> getCommunityMembers(@PathVariable("communityId") Long communityId){
+        return responseService.getSuccessResponse(COMMUNITY_MEMBERS_VIEW_SUCCESS, communityService.getCommunityMembers(communityId));
+    }
+
+
+    // 삭제
     @DeleteMapping("/community")
     public CommonResponse<Object> deleteCommunity(@RequestBody DeleteRequestDto deleteRequestDto) {
         return responseService.getSuccessResponse(COMMUNITY_DELETE_SUCCESS, communityService.deleteCommunity(deleteRequestDto));
@@ -97,12 +97,12 @@ public class CommunityController {
 
     }
 
+    // 수정
     @PatchMapping("/community")
     public CommonResponse<Object> modifyCommunity(@RequestBody CommunityModifyRequestDto modifyRequestDto) {
         return responseService.getSuccessResponse(COMMUNITY_MODIFY_SUCCESS,communityService.modifyCommunity(modifyRequestDto));
 
     }
-
 
     @PatchMapping("/category")
     public CommonResponse<Object> modifyCategory(@RequestBody CommunityModifyRequestDto modifyRequestDto) {
@@ -115,8 +115,9 @@ public class CommunityController {
 
     }
 
-    @PostMapping("/joincommunity")
-    public CommonResponse<Object> joinCommunity(HttpServletRequest request, @RequestParam Long communityId){
+    // 가입
+    @GetMapping("/join/{communityId}")
+    public CommonResponse<Object> joinCommunity(HttpServletRequest request, @PathVariable("communityId") Long communityId){
         Long userId = Long.parseLong(request.getHeader("id"));
         return responseService.getSuccessResponse(COMMUNITY_JOIN_SUCCESS, communityService.addCommunityMember(userId, communityId, USER));
     }
