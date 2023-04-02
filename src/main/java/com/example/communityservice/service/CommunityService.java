@@ -108,10 +108,10 @@ public class CommunityService {
         Community community = communityRepository.findById(communityId)
                 .orElseThrow(() -> new ApiException(NO_COMMUNITY_ERROR));
 
-        Invitation invitation = invitationRepository.findByReceiver_IdAndInvitation_Link(invitedId, cipherText)
+        Invitation invitation = invitationRepository.findByReceiverIdAndCipherText(invitedId, cipherText)
                 .orElseThrow(() -> new ApiException(NO_INVITATION_ERROR));
 
-        if(invitation.getExpiredDate().isAfter(LocalDateTime.now())){
+        if(invitation.getExpiredDate().isBefore(LocalDateTime.now())){
            throw new ApiException(INVITATION_DATE_EXPIRED);
         }
 
@@ -339,8 +339,8 @@ public class CommunityService {
 
 
         invitationRepository.save(Invitation.builder()
-                .sender_id(senderId)
-                .receiver_id(invitedId)
+                .senderId(senderId)
+                .receiverId(invitedId)
                 .cipherText(cipherText)
                 .expiredDate(LocalDateTime.now().plusDays(7))
                 .build());
@@ -354,8 +354,8 @@ public class CommunityService {
         String cipherText = aes256.encrypt(invitedId.toString() + "," + communityId.toString());
 
         invitationRepository.save(Invitation.builder()
-                .sender_id(senderId)
-                .receiver_id(invitedId)
+                .senderId(senderId)
+                .receiverId(invitedId)
                 .cipherText(cipherText)
                 .expiredDate(LocalDateTime.now().plusDays(7))
                 .build());

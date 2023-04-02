@@ -19,8 +19,9 @@ public class Invitation {
     @Column(name = "invitation_id")
     private Long id;
 
-    private Long sender_id;
-    private Long receiver_id;
+    private Long senderId;
+
+    private Long receiverId;
 
     private String cipherText;
 

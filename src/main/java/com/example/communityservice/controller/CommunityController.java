@@ -139,7 +139,8 @@ public class CommunityController {
 
     @PostMapping("/invite/local")
     public CommonResponse<Object> makeInvitationLocal(HttpServletRequest request, @RequestParam Long invitedId,  @RequestParam Long communityId) throws Exception {
-        return responseService.getSuccessResponse(INVITATION_MAKING_SUCCESS, communityService.makeInvitationLocal(invitedId, communityId));
+        Long senderId = Long.parseLong(request.getHeader("id"));
+        return responseService.getSuccessResponse(INVITATION_MAKING_SUCCESS, communityService.makeInvitationLocal(senderId, invitedId, communityId));
     }
 
 }
