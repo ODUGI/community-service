@@ -121,7 +121,7 @@ public class CommunityController {
         String[] ids = communityService.decryptCipherText(cipherText);
         Long invitedId = Long.parseLong(ids[0]);
         Long communityId = Long.parseLong(ids[1]);
-        return responseService.getSuccessResponse(COMMUNITY_JOIN_SUCCESS, communityService.addCommunityMember(invitedId, communityId, USER));
+        return responseService.getSuccessResponse(COMMUNITY_JOIN_SUCCESS, communityService.addCommunityMemberInvitation(cipherText, invitedId, communityId, USER));
     }
 
     @GetMapping("/simplejoin/{communityId}")
@@ -133,7 +133,8 @@ public class CommunityController {
     // 초대권
     @PostMapping("/invite")
     public CommonResponse<Object> makeInvitation(HttpServletRequest request, @RequestParam Long invitedId, @RequestParam Long communityId) throws Exception {
-        return responseService.getSuccessResponse(INVITATION_MAKING_SUCCESS, communityService.makeInvitation(invitedId, communityId));
+        Long senderId = Long.parseLong(request.getHeader("id"));
+        return responseService.getSuccessResponse(INVITATION_MAKING_SUCCESS, communityService.makeInvitation(senderId, invitedId, communityId));
     }
 
     @PostMapping("/invite/local")

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +37,7 @@ public class CommunityService {
     private final CommunityMemberRepository communityMemberRepository;
     private final ChannelRepository channelRepository;
     private final CategoryRepository categoryRepository;
+    private final InvitationRepository invitationRepository;
 
     public Long createCommunity(Long userId, MultipartFile file, String communityName) {
 
@@ -97,6 +99,35 @@ public class CommunityService {
         createChannel(voiceChannelDto);
 
         return newCommunity.getId();
+    }
+
+    public Long addCommunityMemberInvitation(String cipherText, Long invitedId, Long communityId, CommunityRole role) {
+        Member member = memberRepository.findById(invitedId)
+                .orElseThrow(() -> new ApiException(NO_MEMBER_ERROR));
+
+        Community community = communityRepository.findById(communityId)
+                .orElseThrow(() -> new ApiException(NO_COMMUNITY_ERROR));
+
+        Invitation invitation = invitationRepository.findByReceiver_IdAndInvitation_Link(invitedId, cipherText)
+                .orElseThrow(() -> new ApiException(NO_INVITATION_ERROR));
+
+        if(invitation.getExpiredDate().isAfter(LocalDateTime.now())){
+           throw new ApiException(INVITATION_DATE_EXPIRED);
+        }
+
+        CommunityMember communityMember = CommunityMember.builder()
+                .community(community)
+                .member(member)
+                .role(role)
+                .email(member.getEmail())
+                .profileImage(member.getProfileImagePath())
+                .introduction(member.getIntroduction())
+                .name(member.getName())
+                .build();
+
+        CommunityMember newCommunityMember = communityMemberRepository.save(communityMember);
+
+        return newCommunityMember.getId();
     }
 
     public Long addCommunityMember(Long userId, Long communityId, CommunityRole role) {
@@ -301,18 +332,34 @@ public class CommunityService {
         return "OK";
     }
 
-    public String makeInvitation(Long invitedId, Long communityId) throws Exception {
+    public String makeInvitation(Long senderId, Long invitedId, Long communityId) throws Exception {
 
         AES256 aes256 = new AES256();
         String cipherText = aes256.encrypt(invitedId.toString() + "," + communityId.toString());
+
+
+        invitationRepository.save(Invitation.builder()
+                .sender_id(senderId)
+                .receiver_id(invitedId)
+                .cipherText(cipherText)
+                .expiredDate(LocalDateTime.now().plusDays(7))
+                .build());
 
         return "http://13.125.40.16:8090/community/join/" + cipherText;
     }
 
-    public String makeInvitationLocal(Long invitedId, Long communityId) throws Exception {
+    public String makeInvitationLocal(Long senderId, Long invitedId, Long communityId) throws Exception {
 
         AES256 aes256 = new AES256();
         String cipherText = aes256.encrypt(invitedId.toString() + "," + communityId.toString());
+
+        invitationRepository.save(Invitation.builder()
+                .sender_id(senderId)
+                .receiver_id(invitedId)
+                .cipherText(cipherText)
+                .expiredDate(LocalDateTime.now().plusDays(7))
+                .build());
+
         return "http://localhost:8090/community/join/" + cipherText;
     }
 

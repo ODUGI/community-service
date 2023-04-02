@@ -21,6 +21,8 @@ public enum ErrorCode {
     NO_CHANNEL_ERROR(HttpStatus.BAD_REQUEST, "COMMUNITY003", "채널 정보가 존재하지 않습니다."),
     NO_AUTHORITY_ERROR(HttpStatus.BAD_REQUEST, "COMMUNITY004", "권한이 없는 유저 입니다."),
     NO_COMMUNITY_MEMBER_ERROR(HttpStatus.BAD_REQUEST, "COMMUNITY005", "해당 커뮤니티에 속하는 유저가 없습니다."),
+    NO_INVITATION_ERROR(HttpStatus.BAD_REQUEST, "COMMUNITY006", "초대권 정보가 없습니다."),
+    INVITATION_DATE_EXPIRED(HttpStatus.BAD_REQUEST, "COMMUNITY007", "초대권 기간이 만료되었습니다"),
 
     // Member Part
     PW_MATCH_ERROR(HttpStatus.BAD_REQUEST, "MEMBER001", "비밀번호가 일치하지 않습니다."),
