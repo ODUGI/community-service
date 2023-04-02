@@ -118,23 +118,27 @@ public class CommunityController {
     // 가입
     @GetMapping("/join/{cipherText}")
     public CommonResponse<Object> joinCommunity(HttpServletRequest request, @PathVariable("cipherText") String cipherText) throws Exception {
-        Long communityId = communityService.decryptCipherText(cipherText);
+        String[] ids = communityService.decryptCipherText(cipherText);
+        Long invitedId = Long.parseLong(ids[0]);
+        Long communityId = Long.parseLong(ids[1]);
+        return responseService.getSuccessResponse(COMMUNITY_JOIN_SUCCESS, communityService.addCommunityMember(invitedId, communityId, USER));
+    }
+
+    @GetMapping("/simplejoin/{communityId}")
+    public CommonResponse<Object> simpleJoinCommunity(HttpServletRequest request, @PathVariable("communityId") Long communityId) {
         Long userId = Long.parseLong(request.getHeader("id"));
         return responseService.getSuccessResponse(COMMUNITY_JOIN_SUCCESS, communityService.addCommunityMember(userId, communityId, USER));
     }
 
     // 초대권
     @PostMapping("/invite")
-    public CommonResponse<Object> makeInvitation(HttpServletRequest request, Long communityId) throws Exception {
-        return responseService.getSuccessResponse(INVITATION_MAKING_SUCCESS, communityService.makeInvitation(communityId));
+    public CommonResponse<Object> makeInvitation(HttpServletRequest request, @RequestParam Long invitedId, @RequestParam Long communityId) throws Exception {
+        return responseService.getSuccessResponse(INVITATION_MAKING_SUCCESS, communityService.makeInvitation(invitedId, communityId));
     }
 
     @PostMapping("/invite/local")
-    public CommonResponse<Object> makeInvitationLocal(HttpServletRequest request, Long communityId) throws Exception {
-        return responseService.getSuccessResponse(INVITATION_MAKING_SUCCESS, communityService.makeInvitationLocal(communityId));
+    public CommonResponse<Object> makeInvitationLocal(HttpServletRequest request, @RequestParam Long invitedId,  @RequestParam Long communityId) throws Exception {
+        return responseService.getSuccessResponse(INVITATION_MAKING_SUCCESS, communityService.makeInvitationLocal(invitedId, communityId));
     }
-
-
-
 
 }

@@ -301,24 +301,23 @@ public class CommunityService {
         return "OK";
     }
 
-    public String makeInvitation(Long communityId) throws Exception {
+    public String makeInvitation(Long invitedId, Long communityId) throws Exception {
 
         AES256 aes256 = new AES256();
-        String cipherText = aes256.encrypt(communityId.toString());
+        String cipherText = aes256.encrypt(invitedId.toString() + "," + communityId.toString());
 
-        return "http://13.125.40.16:8090/" + cipherText;
+        return "http://13.125.40.16:8090/community/join/" + cipherText;
     }
 
-    public String makeInvitationLocal(Long communityId) throws Exception {
+    public String makeInvitationLocal(Long invitedId, Long communityId) throws Exception {
 
         AES256 aes256 = new AES256();
-        String cipherText = aes256.encrypt(communityId.toString());
-
-        return "http://localhost:8090/" + cipherText;
+        String cipherText = aes256.encrypt(invitedId.toString() + "," + communityId.toString());
+        return "http://localhost:8090/community/join/" + cipherText;
     }
 
-    public Long decryptCipherText(String cipherText) throws Exception{
-        return Long.parseLong(new AES256().decrypt(cipherText));
+    public String[] decryptCipherText(String cipherText) throws Exception{
+        return new AES256().decrypt(cipherText).split(",");
     }
 
 
