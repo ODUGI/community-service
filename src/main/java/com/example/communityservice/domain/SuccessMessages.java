@@ -21,7 +21,8 @@ public enum SuccessMessages {
     CHANNEL_DELETE_SUCCESS("채널 삭제 완료"),
     COMMUNITY_MODIFY_SUCCESS("커뮤니티 수정 완료"),
     CATEGORY_MODIFY_SUCCESS("카테고리 수정 완료"),
-    CHANNEL_MODIFY_SUCCESS("채널 수정 완료");
+    CHANNEL_MODIFY_SUCCESS("채널 수정 완료"),
+    INVITATION_MAKING_SUCCESS("초대권 생성 완료");
 
     private String message;
 }

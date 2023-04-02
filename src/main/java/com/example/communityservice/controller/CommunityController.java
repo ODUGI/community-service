@@ -116,11 +116,24 @@ public class CommunityController {
     }
 
     // 가입
-    @GetMapping("/join/{communityId}")
-    public CommonResponse<Object> joinCommunity(HttpServletRequest request, @PathVariable("communityId") Long communityId){
+    @GetMapping("/join/{cipherText}")
+    public CommonResponse<Object> joinCommunity(HttpServletRequest request, @PathVariable("cipherText") String cipherText) throws Exception {
+        Long communityId = communityService.decryptCipherText(cipherText);
         Long userId = Long.parseLong(request.getHeader("id"));
         return responseService.getSuccessResponse(COMMUNITY_JOIN_SUCCESS, communityService.addCommunityMember(userId, communityId, USER));
     }
+
+    // 초대권
+    @PostMapping("/invite")
+    public CommonResponse<Object> makeInvitation(HttpServletRequest request, Long communityId) throws Exception {
+        return responseService.getSuccessResponse(INVITATION_MAKING_SUCCESS, communityService.makeInvitation(communityId));
+    }
+
+    @PostMapping("/invite/local")
+    public CommonResponse<Object> makeInvitationLocal(HttpServletRequest request, Long communityId) throws Exception {
+        return responseService.getSuccessResponse(INVITATION_MAKING_SUCCESS, communityService.makeInvitationLocal(communityId));
+    }
+
 
 
 

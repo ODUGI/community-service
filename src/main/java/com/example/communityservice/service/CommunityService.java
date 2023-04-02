@@ -1,5 +1,6 @@
 package com.example.communityservice.service;
 
+import com.example.communityservice.domain.AES256;
 import com.example.communityservice.domain.CommunityRole;
 import com.example.communityservice.dto.request.*;
 import com.example.communityservice.dto.response.CategoryResponseDto;
@@ -298,6 +299,26 @@ public class CommunityService {
         channel.modifyName(modifyRequestDto.getName());
 
         return "OK";
+    }
+
+    public String makeInvitation(Long communityId) throws Exception {
+
+        AES256 aes256 = new AES256();
+        String cipherText = aes256.encrypt(communityId.toString());
+
+        return "http://13.125.40.16:8090/" + cipherText;
+    }
+
+    public String makeInvitationLocal(Long communityId) throws Exception {
+
+        AES256 aes256 = new AES256();
+        String cipherText = aes256.encrypt(communityId.toString());
+
+        return "http://localhost:8090/" + cipherText;
+    }
+
+    public Long decryptCipherText(String cipherText) throws Exception{
+        return Long.parseLong(new AES256().decrypt(cipherText));
     }
 
 
